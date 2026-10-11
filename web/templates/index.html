@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Media Variant Studio - Mobile Hub</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --accent-gradient: linear-gradient(135deg, #2563eb, #38bdf8);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 16px;
+      padding-bottom: 80px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 20px;
+    }
+
+    .logo-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-online {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Upload Zone */
+    .upload-zone {
+      border: 2px dashed #2563eb;
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      background: rgba(37, 99, 235, 0.05);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .upload-zone:active {
+      background: rgba(37, 99, 235, 0.15);
+      border-color: var(--accent);
+    }
+
+    .upload-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .upload-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .upload-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Tech Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+    }
+
+    .info-item {
+      background: #0b0f19;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+    }
+
+    .info-label {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      margin-bottom: 2px;
+    }
+
+    .info-value {
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .hash-box {
+      grid-column: span 2;
+      font-family: Consolas, monospace;
+      color: #38bdf8;
+      font-size: 0.72rem;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input[type="text"], select, textarea {
+      width: 100%;
+      background: #0b0f19;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    /* Preset Buttons */
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .preset-chip {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-chip.active {
+      background: #2563eb;
+      border-color: #38bdf8;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Main Action Button */
+    .btn-submit {
+      width: 100%;
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Progress */
+    .progress-wrapper {
+      margin-top: 14px;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      background: #0b0f19;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      height: 16px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-gradient);
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Results */
+    .result-item {
+      background: #0b0f19;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-download {
+      background: #059669;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-title">
+      <span>🎥</span>
+      <span>Media Variant Studio</span>
+    </div>
+    <div class="badge-online" id="connectionBadge">● Connecting...</div>
+  </header>
+
+  <!-- Step 1: Upload Media -->
+  <div class="card">
+    <div class="card-title">1. Select Media from Device</div>
+    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">📤</div>
+      <div class="upload-text" id="uploadStatusText">Tap to Choose Video or Photo</div>
+      <div class="upload-hint">MP4, MOV, MKV, JPG, PNG from Camera Roll</div>
+    </div>
+    <input type="file" id="fileInput" style="display:none" accept="video/*,image/*" onchange="handleFileSelect(event)">
+
+    <!-- Tech Specs after upload -->
+    <div id="techDetails" style="display:none; margin-top:14px;">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Filename</div>
+          <div class="info-value" id="specName">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">File Size</div>
+          <div class="info-value" id="specSize">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Resolution</div>
+          <div class="info-value" id="specRes">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Duration / Specs</div>
+          <div class="info-value" id="specDur">-</div>
+        </div>
+        <div class="info-item hash-box">
+          <div class="info-label">SHA-256 (Source Integrity)</div>
+          <div class="info-value" id="specSha">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Choose Presets -->
+  <div class="card">
+    <div class="card-title">2. Choose Social Presets to Generate</div>
+    <div class="preset-chips">
+      <div class="preset-chip active" data-preset="reel" onclick="togglePreset(this)">📱 Instagram Reel (9:16)</div>
+      <div class="preset-chip active" data-preset="youtube" onclick="togglePreset(this)">🎬 YouTube HD 1080p (16:9)</div>
+      <div class="preset-chip" data-preset="hevc" onclick="togglePreset(this)">⚡ Compact HEVC H.265</div>
+      <div class="preset-chip" data-preset="lossless" onclick="togglePreset(this)">💎 Stream Copy (Lossless)</div>
+    </div>
+
+    <!-- Metadata Fields -->
+    <div class="form-group">
+      <label>Title:</label>
+      <input type="text" id="metaTitle" placeholder="e.g. Travel Video 2026">
+    </div>
+    <div class="form-group">
+      <label>Author / Creator:</label>
+      <input type="text" id="metaAuthor" placeholder="e.g. Your Name">
+    </div>
+    <div class="form-group">
+      <label>Copyright Notice:</label>
+      <input type="text" id="metaCopyright" placeholder="e.g. (C) 2026 All Rights Reserved">
+    </div>
+  </div>
+
+  <!-- Step 3: Action & Progress -->
+  <button class="btn-submit" id="btnProcess" disabled onclick="startProcessing()">
+    <span>🚀</span>
+    <span id="btnProcessText">Generate Variants</span>
+  </button>
+
+  <div class="progress-wrapper" id="progressWrapper">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <div class="progress-text">
+      <span id="statusMessage">Processing media...</span>
+      <span id="percentText">0%</span>
+    </div>
+  </div>
+
+  <!-- Completed Downloads -->
+  <div class="card" id="resultsCard" style="display:none; margin-top:18px;">
+    <div class="card-title">✅ Finished Variants (Ready to Download)</div>
+    <div id="resultsList"></div>
+  </div>
+
+  <script>
+    let uploadedFileId = null;
+    let selectedPresets = ['reel', 'youtube'];
+
+    // Check online status and mode
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/network-info');
+        const data = await res.json();
+        const badge = document.getElementById('connectionBadge');
+        if (data.is_cloud) {
+          badge.innerText = '☁️ Cloud Engine Online (24/7)';
+          badge.style.color = '#38bdf8';
+        } else {
+          badge.innerText = '● Engine Connected';
+        }
+      } catch (err) {
+        document.getElementById('connectionBadge').innerText = '● Connected';
+      }
+    });
+
+    function togglePreset(el) {
+      const preset = el.dataset.preset;
+      if (el.classList.contains('active')) {
+        el.classList.remove('active');
+        selectedPresets = selectedPresets.filter(p => p !== preset);
+      } else {
+        el.classList.add('active');
+        selectedPresets.push(preset);
+      }
+    }
+
+    async function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      document.getElementById('uploadStatusText').innerText = 'Uploading: ' + file.name + '...';
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+        
+        if (data.success) {
+          uploadedFileId = data.file_id;
+          document.getElementById('uploadStatusText').innerText = '✓ Ready: ' + file.name;
+          document.getElementById('specName').innerText = data.info.file_name;
+          document.getElementById('specSize').innerText = data.info.file_size_formatted;
+          document.getElementById('specRes').innerText = data.info.video ? data.info.video.resolution : data.info.resolution;
+          document.getElementById('specDur').innerText = data.info.video ? (data.info.duration_formatted + ' (' + data.info.video.fps + ' fps)') : data.info.format;
+          document.getElementById('specSha').innerText = data.info.sha256;
+          document.getElementById('techDetails').style.display = 'block';
+          document.getElementById('btnProcess').disabled = false;
+        } else {
+          alert('Upload failed: ' + data.error);
+        }
+      } catch (err) {
+        alert('Network error communicating with PC: ' + err);
+      }
+    }
+
+    async function startProcessing() {
+      if (!uploadedFileId) return;
+      if (selectedPresets.length === 0) {
+        alert('Please select at least one preset.');
+        return;
+      }
+
+      document.getElementById('btnProcess').disabled = true;
+      document.getElementById('progressWrapper').style.display = 'block';
+      document.getElementById('resultsCard').style.display = 'none';
+      document.getElementById('resultsList').innerHTML = '';
+
+      const payload = {
+        file_id: uploadedFileId,
+        presets: selectedPresets,
+        metadata: {
+          title: document.getElementById('metaTitle').value,
+          author: document.getElementById('metaAuthor').value,
+          copyright: document.getElementById('metaCopyright').value
+        }
+      };
+
+      try {
+        const res = await fetch('/api/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          pollProgress(data.job_id);
+        } else {
+          alert('Processing error: ' + data.error);
+          document.getElementById('btnProcess').disabled = false;
+        }
+      } catch (err) {
+        alert('Error: ' + err);
+        document.getElementById('btnProcess').disabled = false;
+      }
+    }
+
+    function pollProgress(jobId) {
+      const interval = setInterval(async () => {
+        try {
+          const res = await fetch('/api/progress/' + jobId);
+          const data = await res.json();
+
+          const pct = Math.round(data.progress || 0);
+          document.getElementById('progressBar').style.width = pct + '%';
+          document.getElementById('percentText').innerText = pct + '%';
+          document.getElementById('statusMessage').innerText = data.status_message || 'Processing on PC...';
+
+          if (data.completed) {
+            clearInterval(interval);
+            document.getElementById('btnProcess').disabled = false;
+            showResults(data.outputs);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }, 1000);
+    }
+
+    function showResults(outputs) {
+      const card = document.getElementById('resultsCard');
+      const list = document.getElementById('resultsList');
+      list.innerHTML = '';
+
+      outputs.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        div.innerHTML = `
+          <div>
+            <div style="font-weight:600; font-size:0.9rem;">${item.name}</div>
+            <div style="color:#94a3b8; font-size:0.75rem;">${item.size_formatted} • SHA: ${item.sha256.substring(0, 10)}...</div>
+          </div>
+          <a href="/api/download/${encodeURIComponent(item.filename)}" class="btn-download" download>
+            <span>⬇️</span> Download
+          </a>
+        `;
+        list.appendChild(div);
+      });
+
+      card.style.display = 'block';
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

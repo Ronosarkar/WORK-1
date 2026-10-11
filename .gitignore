@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv/
+env/
+venv/
+
+# Windows binaries (exceeds GitHub 100MB limit)
+bin/*.exe
+bin/ffmpeg.exe
+bin/ffprobe.exe
+dist/
+build/
+*.spec
+
+# Temporary upload and export folders
+web_uploads/*
+!web_uploads/.gitkeep
+web_exports/*
+!web_exports/.gitkeep
+tests/scratch/*

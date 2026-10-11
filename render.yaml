@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: media-variant-studio
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "./render-build.sh"
+    startCommand: "gunicorn -w 1 -k gthread --threads 4 --timeout 300 server:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: IS_CLOUD
+        value: "1"
